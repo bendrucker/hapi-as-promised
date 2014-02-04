@@ -11,7 +11,8 @@ module.exports = {
 
       if (response.variety === 'plain' && typeof response.source.then === 'function') {
         return response.source.then(function (res) {
-          return next(res);
+          response.source = res;
+          return next(response);
         }, function (err) {
           if (!err.isBoom) {
             err = Hapi.error.internal(err.message, err);

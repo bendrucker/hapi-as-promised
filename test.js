@@ -45,12 +45,13 @@ describe('Hapi Promise', function () {
       method: 'GET',
       path: '/resolve',
       handler: function (request, reply) {
-        reply(Promise.resolve('Promised response'));
+        reply(Promise.resolve('Promised response')).code(201);
       }
     });
 
     server.inject('/resolve', function (response) {
       expect(response.result).to.equal('Promised response');
+      expect(response.statusCode).to.equal(201);
       done();
     });
   });
@@ -60,11 +61,12 @@ describe('Hapi Promise', function () {
       method: 'GET',
       path: '/error/boom',
       handler: function (request, reply) {
-        reply(Promise.reject(Hapi.error.notFound('Typed rejection')));
+        reply(Promise.reject(Hapi.error.notFound('Typed rejection'))).code(202);
       }
     });
 
     server.inject('/error/boom', function (response) {
+      expect(response.statusCode).to.not.equal(202);
       expect(response.result).to.have.property('message', 'Typed rejection');
       done();
     });

@@ -17,9 +17,9 @@ server.route({
 });
 ```
 
-The plugin will automatically intercept all replies that are **thenables** (have a property `then` that is a function) and resolve them.
+The plugin will automatically intercept all replies that are **thenables** (have a property `then` that is a function) and resolve them. You can still chain methods to your reply like `code`. Only the reply body itself is modified. 
 
-It also handles errors neatly. If you reject the promise with a [Hapi error](https://github.com/spumko/hapi/blob/master/docs/Reference.md#hapierror), that rejection will be sent as JSON as if you'd called reply directly with the error. For all other errors, an [internal error](https://github.com/spumko/hapi/blob/master/docs/Reference.md#internalmessage-data) will be sent. 
+It also handles errors neatly. If you reject the promise with a [Hapi error](https://github.com/spumko/hapi/blob/master/docs/Reference.md#hapierror), that rejection will be sent as JSON as if you'd called reply directly with the error. For all other errors, an [internal error](https://github.com/spumko/hapi/blob/master/docs/Reference.md#internalmessage-data) will be sent. The response is fully rewritten when a promise is rejected, so any chained header methods on the original `reply` call will be erased. 
 
 The following two snippets will behave identically: 
 
