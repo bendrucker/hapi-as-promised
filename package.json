@@ -24,5 +24,8 @@
     "hapi": "~2.1.2",
     "lab": "~1.5.0",
     "bluebird": "~1.0.1"
+  },
+  peerDependencies: {
+    "hapi": "2.x"
   }
 }
