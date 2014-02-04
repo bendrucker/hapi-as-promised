@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- '0.10'
+deploy:
+  provider: npm
+  email: bvdrucker@gmail.com
+  api_key:
+    secure: d9Qlc3uvVf2f8L0ZPQcCEb5mQWBtvgSYpLIS71otfepbCGEn9k8a6nOMKjGGVxMWIUdbPUVEBh4PzGHwpstDyMjJcabGiwmaV7rX7btRBI4HikgEwVuFI+mhHU0AV/JL7eKdchM53fhSAa9vgNCtLPdWPYVOdrd/eMLCkDMCie0=
+  on:
+    tags: true
+    repo: valet-io/hapi-promise

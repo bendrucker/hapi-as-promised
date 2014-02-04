@@ -1,6 +1,87 @@
+var Lab         = require('lab'),
+    describe    = Lab.experiment,
+    it          = Lab.test,
+    expect      = Lab.expect,
+    before      = Lab.before,
+    after       = Lab.after;
+
+var Promise     = require('bluebird');
+
+var Hapi        = require('hapi'),
+    hapiPromise = require('./');
+
+
 describe('Hapi Promise', function () {
-  it('leaves requests that do not return promises untouched');
-  it('replies with the resolution of a promise');
-  it('replies with a Hapi.error rejection');
-  it('casts any other rejection into a Hapi.error.internal');
+
+  var server;
+
+  before(function (done) {
+    server = new Hapi.Server(8100)
+    server.pack.register(hapiPromise, function () {});
+    server.start(done);
+  });
+
+  after(function (done) {
+    server.stop(done);
+  });
+
+  it('leaves requests that do not return promises untouched', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/default',
+      handler: function (request, reply) {
+        reply('Normal response');
+      }
+    });
+
+    server.inject('/default', function (response) {
+      expect(response.result).to.equal('Normal response');
+      done();
+    });
+  });
+
+  it('replies with the resolution of a promise', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/resolve',
+      handler: function (request, reply) {
+        reply(Promise.resolve('Promised response'));
+      }
+    });
+
+    server.inject('/resolve', function (response) {
+      expect(response.result).to.equal('Promised response');
+      done();
+    });
+  });
+
+  it('replies with a Hapi.error rejection', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/error/boom',
+      handler: function (request, reply) {
+        reply(Promise.reject(Hapi.error.notFound('Typed rejection')));
+      }
+    });
+
+    server.inject('/error/boom', function (response) {
+      expect(response.result).to.have.property('message', 'Typed rejection');
+      done();
+    });
+  });
+  it('casts any other rejection into a Hapi.error.internal', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/error/generic',
+      handler: function (request, reply) {
+        reply(Promise.reject('Generic'));
+      }
+    });
+
+    server.inject('/error/generic', function (response) {
+      expect(response.result).to.have.property('statusCode', 500);
+      expect(response.result).to.have.property('message', 'An internal server error occurred');
+      done();
+    });
+  });
 });

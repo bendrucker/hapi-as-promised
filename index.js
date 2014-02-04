@@ -7,13 +7,13 @@ module.exports = {
 
     plugin.ext('onPreResponse', function (request, reply) {
       var Hapi = plugin.hapi,
-      response = request.response();
+      response = request.response;
 
-      if (response.variety === 'plain' && typeof response.raw.then === 'function') {
-        return response.then(function (res) {
+      if (response.variety === 'plain' && typeof response.source.then === 'function') {
+        return response.source.then(function (res) {
           return reply(res);
         }, function (err) {
-          if (!(err instanceof Hapi.error)) {
+          if (!err.isBoom) {
             err = Hapi.error.internal(err.message, err);
           }
           return reply(err);
