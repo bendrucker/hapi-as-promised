@@ -1,7 +1,7 @@
 hapi-promise [![Build Status](https://travis-ci.org/valet-io/hapi-promise.png?branch=0.0.1)](https://travis-ci.org/valet-io/hapi-promise)
 ============
 
-A hapi plugin that allows you to return promises in your request handlers
+A hapi plugin that allows you to return promises in your request handlers. Based on [miksago's hapi-promise-testing](https://github.com/miksago/hapi-promise-testing).
 
 ## Usage
 
