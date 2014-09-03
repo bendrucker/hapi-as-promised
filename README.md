@@ -1,7 +1,7 @@
-hapi-promise [![Build Status](https://travis-ci.org/valet-io/hapi-promise.png?branch=0.0.1)](https://travis-ci.org/valet-io/hapi-promise) [![NPM version](https://badge.fury.io/js/hapi-promise.png)](http://badge.fury.io/js/hapi-promise)
+hapi-as-promised [![Build Status](https://travis-ci.org/bendrucker/hapi-as-promised.png?branch=0.0.1)](https://travis-ci.org/bendrucker/hapi-as-promised) [![NPM version](https://badge.fury.io/js/hapi-as-promised.png)](http://badge.fury.io/js/hapi-as-promised)
 ============
 
-A hapi plugin that allows you to return promises in your request handlers. Based on [miksago's hapi-promise-testing](https://github.com/miksago/hapi-promise-testing).
+A hapi plugin that allows you to return promises in your request handlers. Based on [miksago's hapi-promise-testing](https://github.com/miksago/hapi-as-promised-testing).
 
 ## Usage
 

@@ -1,5 +1,5 @@
 {
-  "name": "hapi-promise",
+  "name": "hapi-as-promised",
   "version": "0.0.4",
   "description": "A hapi plugin that allows you to return promises in your request handlers",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/valet-io/hapi-promise"
+    "url": "https://github.com/bendrucker/hapi-as-promised"
   },
   "keywords": [
     "hapi",
@@ -17,9 +17,9 @@
   "author": "Ben Drucker <bvdrucker@gmail.com> (http://www.bendrucker.me/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/valet-io/hapi-promise/issues"
+    "url": "https://github.com/bendrucker/hapi-as-promised/issues"
   },
-  "homepage": "https://github.com/valet-io/hapi-promise",
+  "homepage": "https://github.com/bendrucker/hapi-as-promised",
   "devDependencies": {
     "hapi": "6",
     "lab": "4",
