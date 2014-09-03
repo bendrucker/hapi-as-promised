@@ -9,7 +9,7 @@ module.exports = {
       var Hapi = plugin.hapi,
       response = request.response;
 
-      if (response.variety === 'plain' && typeof response.source.then === 'function') {
+      if (response.variety === 'plain' && !!response.source && typeof response.source.then === 'function') {
         return response.source.then(function (res) {
           response.source = res;
           return next(response);

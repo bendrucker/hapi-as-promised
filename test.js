@@ -1,9 +1,10 @@
 var Lab         = require('lab'),
-    describe    = Lab.experiment,
-    it          = Lab.test,
+    lab         = module.exports.lab = Lab.script(),
+    describe    = lab.experiment,
+    it          = lab.test,
     expect      = Lab.expect,
-    before      = Lab.before,
-    after       = Lab.after;
+    before      = lab.before,
+    after       = lab.after;
 
 var Promise     = require('bluebird');
 
@@ -56,6 +57,21 @@ describe('Hapi Promise', function () {
     });
   });
 
+  it('replies with a redirect', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/redirect',
+      handler: function (request, reply) {
+        reply.redirect('/foo');
+      }
+    });
+
+    server.inject('/redirect', function (response) {
+      expect(response.statusCode).to.equal(302);
+      done();
+    });
+  });
+
   it('replies with a Hapi.error rejection', function (done) {
     server.route({
       method: 'GET',
@@ -71,6 +87,7 @@ describe('Hapi Promise', function () {
       done();
     });
   });
+
   it('casts any other rejection into a Hapi.error.internal', function (done) {
     server.route({
       method: 'GET',
