@@ -9,4 +9,4 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: valet-io/hapi-promise
+    repo: bendrucker/hapi-as-promised
