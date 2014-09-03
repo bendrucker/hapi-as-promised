@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/valet-io/hapi-promise",
   "devDependencies": {
-    "hapi": "~2.1.2",
-    "lab": "~1.5.0",
-    "bluebird": "~1.0.1"
+    "hapi": "6",
+    "lab": "4",
+    "bluebird": "2"
   },
   "peerDependencies": {
-    "hapi": "2.x"
+    "hapi": "6"
   }
 }
