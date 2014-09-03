@@ -4,7 +4,7 @@
   "description": "A Hapi plugin that allows you to reply with promises in your request handlers",
   "main": "index.js",
   "scripts": {
-    "test": "lab test.js"
+    "test": "make test-cov"
   },
   "repository": {
     "type": "git",
