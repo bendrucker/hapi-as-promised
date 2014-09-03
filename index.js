@@ -1,29 +1,27 @@
 'use strict';
 
-module.exports = {
-  name: require('./package.json').name,
-  version: require('./package.json').version,
-  register: function (plugin, options, next) {
+exports.register = function (plugin, options, next) {
 
-    plugin.ext('onPreResponse', function (request, next) {
-      var Hapi = plugin.hapi,
-      response = request.response;
+  plugin.ext('onPreResponse', function (request, reply) {
+    var res = request.response;
+    if (res.source && typeof res.source.then === 'function') {
+      return res.source
+        .then(function (value) {
+          res.source = value;
+          return res;
+        })
+        .catch(function (err) {
+          throw err;
+        })
+        .then(reply, reply);
+    }
+    reply();
+  });
 
-      if (response.variety === 'plain' && typeof response.source.then === 'function') {
-        return response.source.then(function (res) {
-          response.source = res;
-          return next(response);
-        }, function (err) {
-          if (!err.isBoom) {
-            err = Hapi.error.internal(err.message, err);
-          }
-          return next(err);
-        });
-      }
+  next();
 
-      next();
-    });
-
-    next();
-  }
 };
+
+exports.register.attributes = {
+  pkg: require('./package.json')
+}

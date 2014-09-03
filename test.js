@@ -1,31 +1,24 @@
-var Lab         = require('lab'),
-    describe    = Lab.experiment,
-    it          = Lab.test,
-    expect      = Lab.expect,
-    before      = Lab.before,
-    after       = Lab.after;
+'use strict';
 
-var Promise     = require('bluebird');
+var Lab      = require('lab');
+var lab      = exports.lab = Lab.script();
+var describe = lab.describe;
+var it       = lab.it;
+var before   = lab.before;
+var expect   = Lab.expect;
+var Promise  = require('bluebird');
+var hapi     = require('hapi');
 
-var Hapi        = require('hapi'),
-    hapiPromise = require('./');
 
-
-describe('Hapi Promise', function () {
+describe('hapi-as-promised', function () {
 
   var server;
-
   before(function (done) {
-    server = new Hapi.Server(8100)
-    server.pack.register(hapiPromise, function () {});
-    server.start(done);
+    server = new hapi.Server();
+    server.pack.register(require('./'), done);
   });
 
-  after(function (done) {
-    server.stop(done);
-  });
-
-  it('leaves requests that do not return promises untouched', function (done) {
+  it('ignores non-thenable replies', function (done) {
     server.route({
       method: 'GET',
       path: '/default',
@@ -40,7 +33,22 @@ describe('Hapi Promise', function () {
     });
   });
 
-  it('replies with the resolution of a promise', function (done) {
+  it('ignores empty replies', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/empty',
+      handler: function (request, reply) {
+        reply();
+      }
+    });
+
+    server.inject('/empty', function (response) {
+      expect(response.result).to.equal(null);
+      done();
+    });
+  });
+
+  it('handles promises that resolve', function (done) {
     server.route({
       method: 'GET',
       path: '/resolve',
@@ -56,34 +64,27 @@ describe('Hapi Promise', function () {
     });
   });
 
-  it('replies with a Hapi.error rejection', function (done) {
+  it('handles promises that reject', function (done) {
+    var err = hapi.error.forbidden();
     server.route({
       method: 'GET',
-      path: '/error/boom',
+      path: '/error',
       handler: function (request, reply) {
-        reply(Promise.reject(Hapi.error.notFound('Typed rejection'))).code(202);
+        // Use a fake rejecting thenable b/c Bluebird's unhandled detection
+        // catches a normal rejection
+        reply({
+          then: function () {
+            return Promise.reject(err);
+          }
+        });
       }
     });
 
-    server.inject('/error/boom', function (response) {
-      expect(response.statusCode).to.not.equal(202);
-      expect(response.result).to.have.property('message', 'Typed rejection');
+    server.inject('/error', function (response) {
+      expect(response.statusCode).to.equal(403);
+      expect(response.result).to.have.property('error', err.message);
       done();
     });
   });
-  it('casts any other rejection into a Hapi.error.internal', function (done) {
-    server.route({
-      method: 'GET',
-      path: '/error/generic',
-      handler: function (request, reply) {
-        reply(Promise.reject('Generic'));
-      }
-    });
 
-    server.inject('/error/generic', function (response) {
-      expect(response.result).to.have.property('statusCode', 500);
-      expect(response.result).to.have.property('message', 'An internal server error occurred');
-      done();
-    });
-  });
 });
