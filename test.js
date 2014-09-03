@@ -56,6 +56,21 @@ describe('Hapi Promise', function () {
     });
   });
 
+  it('replies with a redirect', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/redirect',
+      handler: function (request, reply) {
+        reply.redirect('/foo');
+      }
+    });
+
+    server.inject('/redirect', function (response) {
+      expect(response.statusCode).to.equal(302);
+      done();
+    });
+  });
+
   it('replies with a Hapi.error rejection', function (done) {
     server.route({
       method: 'GET',
