@@ -10,9 +10,6 @@ exports.register = function (plugin, options, next) {
           res.source = value;
           return res;
         })
-        .catch(function (err) {
-          throw err;
-        })
         .then(reply, reply);
     }
     reply();
