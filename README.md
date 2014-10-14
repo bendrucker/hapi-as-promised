@@ -1,4 +1,4 @@
-hapi-as-promised [![Build Status](https://travis-ci.org/bendrucker/hapi-as-promised.svg?branch=master)](https://travis-ci.org/bendrucker/hapi-as-promised) [![NPM version](https://badge.fury.io/js/hapi-as-promised.png)](http://badge.fury.io/js/hapi-as-promised)
+hapi-as-promised [![Build Status](https://travis-ci.org/bendrucker/hapi-as-promised.svg?branch=master)](https://travis-ci.org/bendrucker/hapi-as-promised) [![NPM version](https://badge.fury.io/js/hapi-as-promised.svg)](http://badge.fury.io/js/hapi-as-promised)
 ============
 
 A Hapi plugin that allows you to reply with promises in your request handlers. 
