@@ -1,6 +1,6 @@
 {
   "name": "hapi-as-promised",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A Hapi plugin that allows you to reply with promises in your request handlers",
   "main": "index.js",
   "scripts": {
