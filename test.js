@@ -8,6 +8,7 @@ var before   = lab.before;
 var expect   = Lab.expect;
 var Promise  = require('bluebird');
 var hapi     = require('hapi');
+var joi      = require('joi');
 
 
 describe('hapi-as-promised', function () {
@@ -83,6 +84,27 @@ describe('hapi-as-promised', function () {
     server.inject('/error', function (response) {
       expect(response.statusCode).to.equal(403);
       expect(response.result).to.have.property('error', err.message);
+      done();
+    });
+  });
+
+  it('handles promises with response validation', function (done) {
+    server.route({
+      method: 'GET',
+      path: '/validate',
+      handler: function (request, reply) {
+        reply(Promise.resolve({ key: 'value' })).code(201);
+      },
+      config: {
+        response: {
+          schema: joi.object().keys({ key: joi.string() })
+        }
+      }
+    });
+
+    server.inject('/validate', function (response) {
+      expect(response.result).to.deep.equal({ key: 'value' });
+      expect(response.statusCode).to.equal(201);
       done();
     });
   });

@@ -2,7 +2,7 @@
 
 exports.register = function (plugin, options, next) {
 
-  plugin.ext('onPreResponse', function (request, reply) {
+  plugin.ext('onPostHandler', function (request, reply) {
     var res = request.response;
     if (res.source && typeof res.source.then === 'function') {
       return res.source
@@ -21,4 +21,4 @@ exports.register = function (plugin, options, next) {
 
 exports.register.attributes = {
   pkg: require('./package.json')
-}
+};

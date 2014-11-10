@@ -21,9 +21,10 @@
   },
   "homepage": "https://github.com/bendrucker/hapi-as-promised",
   "devDependencies": {
+    "bluebird": "2",
     "hapi": "7",
-    "lab": "4",
-    "bluebird": "2"
+    "joi": "4",
+    "lab": "4"
   },
   "peerDependencies": {
     "hapi": "6 || 7"
