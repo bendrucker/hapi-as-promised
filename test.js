@@ -77,7 +77,8 @@ describe('hapi-as-promised', function () {
           then: function () {
             return Promise.reject(err);
           }
-        });
+        })
+        .code(200);
       }
     });
 
